@@ -4,21 +4,36 @@ namespace WooStarter\Generator;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use WooStarter\traits\FileHelper;
+use WooStarter\traits\SlugInflector;
 
 class TwigGenerator {
 
-	use \WooStarter\traits\FileHelper;
+	use FileHelper;
+	use SlugInflector;
 
 	/**
 	 * @var \Twig\Environment
 	 */
 	private Environment $twig;
 	private string $root_directory;
+	private string $slug;
+	private array $data = [];
 
-	public function __construct( string $template_directory ) {
+	public function __construct( string $template_directory, array $data ) {
 		$loader               = new FilesystemLoader( $template_directory );
 		$this->root_directory = $template_directory;
 		$this->twig           = new Environment( $loader );
+		$this->slug           = $data[ 'slug' ];
+		$this->data           = [
+			'snake_case'            => $this->snake_case( $data[ 'slug' ] ),
+			'kebab_case'            => $data[ 'slug' ],
+			'pascal_case'           => $this->pascal_case( $data[ 'slug' ] ),
+			'upper_snake_case'      => $this->upper_snake_case( $data[ 'slug' ] ),
+			'extension_name'        => $data[ 'extension_name' ],
+			'author'		        => $data[ 'author' ],
+			'extension_description' => $data[ 'extension_description' ],
+		];
 	}
 
 	/**
@@ -46,10 +61,10 @@ class TwigGenerator {
 
 				$this->generate( '', $template, $new_output_directory );
 			} else if ( is_file( $template ) ) {
-				$file_name = $this->get_original_file_name( basename( $template ) );
+				$file_name = $this->get_new_file_name( basename( $template ), $this->slug );
 				echo 'Writing to ' . $file_name . "\n";
 				$rel_path = $this->get_path_relative_to_parent( $template, $this->root_directory );
-				$rendered_content = $this->twig->render( $rel_path, [] );
+				$rendered_content = $this->twig->render( $rel_path, $this->data );
 
 				$output_path = $output_directory . '/' . $relative_path . $file_name;
 				file_put_contents( $output_path, $rendered_content );

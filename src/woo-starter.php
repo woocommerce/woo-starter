@@ -13,6 +13,8 @@ try {
 	$container = new Container();
 	App::setContainer( $container );
 
+	App::setVar( 'default_slug', 'plugin-name' );
+
 	$application = new Application();
 	$application->add( $container->make( CreateCommand::class ) );
 	$application->run();
