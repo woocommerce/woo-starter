@@ -21,7 +21,7 @@ require_once WP_TESTS_DIR . '/includes/functions.php';
 // Activate the plugin being tested
 function _manually_load_plugin() {
 	$plugin_dir  = dirname( dirname( __FILE__ ) );
-	$plugin_file = $plugin_dir . '/plugin-name.php'; // Replace with your actual plugin file
+	$plugin_file = $plugin_dir . '/{{ kebab_case }}.php'; // Replace with your actual plugin file
 	require_once $plugin_file;
 }
 

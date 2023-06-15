@@ -8,8 +8,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    {{ pascal_case }}
+ * @subpackage {{ pascal_case }}/includes
  */
 
 /**
@@ -19,11 +19,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    {{ pascal_case }}
+ * @subpackage {{ pascal_case }}/includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_I18n {
+class {{ pascal_case }}_I18n {
 
 
 	/**
@@ -34,7 +34,7 @@ class Plugin_Name_I18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'plugin-name',
+			'{{ kebab_case }}',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

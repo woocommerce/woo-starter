@@ -1,5 +1,5 @@
 {
-	"name": "plugin-name",
+	"name": "{{ kebab_case }}",
 	"version": "1.0.0",
 	"description": "A standardized, organized, object-oriented foundation for building high-quality WordPress Plugins.",
 	"main": "index.js",
@@ -7,11 +7,11 @@
 		"env:start": "./node_modules/.bin/wp-env start",
 		"env:stop": "./node_modules/.bin/wp-env stop",
 		"env:destroy": "./node_modules/.bin/wp-env destroy",
-		"test:unit:env": "./node_modules/.bin/wp-env run --env-cwd='wp-content/plugins/plugin-name' cli vendor/bin/phpunit -c phpunit.xml --verbose",
+		"test:unit:env": "./node_modules/.bin/wp-env run --env-cwd='wp-content/plugins/{{ kebab_case }}' cli vendor/bin/phpunit -c phpunit.xml --verbose",
 		"phpcs": "vendor/bin/phpcs --standard=./phpcs.xml.dist .",
 		"phpcbf": "vendor/bin/phpcbf --standard=./phpcs.xml.dist .",
 		"security": "vendor/bin/phpcs --standard=./phpcs-security.xml.dist .",
-		"zip": "zip -r plugin-name.zip ."
+		"zip": "zip -r {{ kebab_case }}.zip ."
 	},
 	"author": "WooCommerce",
 	"license": "ISC",

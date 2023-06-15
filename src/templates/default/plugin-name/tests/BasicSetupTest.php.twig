@@ -2,7 +2,7 @@
 /**
  * Class BasicSetupTest
  *
- * @package Plugin_Name
+ * @package {{ pascal_case }}
  */
 
 class BasicSetupTest extends WP_UnitTestCase {
@@ -16,6 +16,6 @@ class BasicSetupTest extends WP_UnitTestCase {
 	}
 
 	public function test_version() {
-		$this->assertEquals( '1.0.0', PLUGIN_NAME_VERSION );
+		$this->assertEquals( '1.0.0', {{ upper_snake_case }}_VERSION );
 	}
 }
