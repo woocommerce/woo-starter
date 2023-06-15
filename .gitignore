@@ -1,0 +1,13 @@
+# Project Files
+vendor
+node_modules
+
+# IDE Files
+.idea
+.vscode
+
+# OS Files
+.DS_Store
+
+# Generated Files
+src/plugin-name
