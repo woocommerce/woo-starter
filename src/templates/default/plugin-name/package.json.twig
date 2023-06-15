@@ -7,7 +7,7 @@
 		"env:start": "./node_modules/.bin/wp-env start",
 		"env:stop": "./node_modules/.bin/wp-env stop",
 		"env:destroy": "./node_modules/.bin/wp-env destroy",
-		"test:unit:env": "./node_modules/.bin/wp-env run --env-cwd='wp-content/plugins/{{ kebab_case }}' cli vendor/bin/phpunit -c phpunit.xml --verbose",
+		"test:unit": "./node_modules/.bin/wp-env run --env-cwd='wp-content/plugins/{{ kebab_case }}' cli vendor/bin/phpunit -c phpunit.xml --verbose",
 		"phpcs": "vendor/bin/phpcs --standard=./phpcs.xml.dist .",
 		"phpcbf": "vendor/bin/phpcbf --standard=./phpcs.xml.dist .",
 		"security": "vendor/bin/phpcs --standard=./phpcs-security.xml.dist .",
