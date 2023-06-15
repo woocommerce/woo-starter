@@ -4,6 +4,8 @@ namespace WooStarter\traits;
 
 use WooStarter\App;
 
+use FilesystemIterator;
+
 trait FileHelper {
 	/**
 	 * Get the original file name without the .twig extension from a Twig template file.
@@ -72,5 +74,25 @@ trait FileHelper {
 	function get_new_file_name( string $file_name, string $new_slug ): string {
 		$original_file_name = $this->get_original_file_name( $file_name );
 		return str_replace( App::getVar( 'default_slug' ), $new_slug, $original_file_name );
+	}
+
+	/**
+	 * Get all templates from a Phar archive.
+	 *
+	 * @param string $template_directory
+	 * @return array
+	 */
+	function get_phar_templates( string $template_directory ): array {
+		$paths = [];
+		$iterator = new FilesystemIterator(
+			$template_directory,
+			FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::UNIX_PATHS
+		);
+
+		foreach ($iterator as $path => $file_info) {
+			$paths[] = $path;
+		}
+
+		return $paths;
 	}
 }

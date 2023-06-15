@@ -13,6 +13,8 @@ use WooStarter\App;
 use WooStarter\Generator\TwigGenerator;
 use WooStarter\InputValidator;
 
+use Phar;
+
 class CreateCommand extends Command {
 
 	public static $defaultName = 'create';
@@ -41,10 +43,6 @@ BANNER;
 	protected function configure() {
 		$this
 			->setHelp( 'The create command guides the user through the process of creating a standard WooCommerce Extension.' );
-//			->setDefinition( [
-//				new InputArgument( 'extension_name', InputArgument::OPTIONAL, 'The name of the extension to create.' ),
-//				new InputArgument( 'extension_slug', InputArgument::OPTIONAL, 'The slug of the extension to create.' ),
-//			] );
 	}
 
 	public function execute( InputInterface $input, OutputInterface $output ): int {
@@ -120,7 +118,17 @@ BANNER;
 			'wants_di'              => $wants_di,
 		];
 
-		$template_directory = __DIR__ . '/../templates/default/' . App::getVar( 'default_slug' );
+		/**
+		 * If we are running from a phar file, we need to use the phar file as the template directory.
+		 */
+		if ( Phar::running( false ) ) {
+			$directory_path     = 'src/templates/default/' . App::getVar( 'default_slug' );
+			$phar_file           = Phar::running( false );
+			$template_directory = 'phar://' . $phar_file . '/' . $directory_path;
+		} else {
+			$template_directory = __DIR__ . '/../templates/default/' . App::getVar( 'default_slug' );
+		}
+
 		$generator = new TwigGenerator( $template_directory, $data );
 		$generator->generate( '', $template_directory, $extension_slug );
 

@@ -7,6 +7,8 @@ use Twig\Loader\FilesystemLoader;
 use WooStarter\traits\FileHelper;
 use WooStarter\traits\SlugInflector;
 
+use Phar;
+
 class TwigGenerator {
 
 	use FileHelper;
@@ -44,7 +46,11 @@ class TwigGenerator {
 	 * @param string $output_directory
 	 */
 	public function generate( string $relative_path, string $template_directory, string $output_directory ) {
-		$templates = glob($template_directory . '/' . $relative_path . '{*,.*}', GLOB_BRACE );
+		if ( Phar::running( false ) ) {
+			$templates = $this->get_phar_templates( $template_directory );
+		} else {
+			$templates = glob($template_directory . '/' . $relative_path . '{*,.*}', GLOB_BRACE );
+		}
 
 		if ( ! is_dir( $output_directory ) ) {
 			mkdir( $output_directory, 0755, true );
