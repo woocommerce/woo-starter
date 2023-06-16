@@ -9,7 +9,7 @@
     "src/templates/default/plugin-name/.wp-env.json.twig",
     "src/templates/default/plugin-name/phpunit.xml.twig",
     "src/templates/default/plugin-name/phpcs.xml.dist.twig",
-    "src/templates/default/plugin-name/README.txt.twig"
+    "src/templates/default/plugin-name/README.md.twig"
   ],
   "directories-bin": [
     "src/templates/default/plugin-name/tests"
