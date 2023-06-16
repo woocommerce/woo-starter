@@ -3,6 +3,7 @@
 namespace WooStarter\Commands;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,9 +13,11 @@ use Symfony\Component\Console\Question\Question;
 use WooStarter\App;
 use WooStarter\Generator\TwigGenerator;
 use WooStarter\InputValidator;
+use WooStarter\ProcessManager;
 
 use Phar;
 
+// TODO: Add DI plugin templates.
 class CreateCommand extends Command {
 
 	public static $defaultName = 'create';
@@ -118,6 +121,8 @@ BANNER;
 			'wants_di'              => $wants_di,
 		];
 
+		$progress_bar = new ProgressBar( $output );
+
 		/**
 		 * If we are running from a phar file, we need to use the phar file as the template directory.
 		 */
@@ -129,24 +134,38 @@ BANNER;
 			$template_directory = __DIR__ . '/../templates/default/' . App::getVar( 'default_slug' );
 		}
 
-		$generator = new TwigGenerator( $template_directory, $data );
+		$output->writeln( '<info>Generating Extension Files...</info>' );
+		$progress_bar = new ProgressBar( $output );
+		$progress_bar->start();
+
+		$generator = new TwigGenerator( $template_directory, $data, $output );
 		$message = $generator->generate( '', $template_directory, $extension_slug );
+
+		$progress_bar->finish();
 
 		if ( $message !== 'success'  ) {
 			$output->writeln( sprintf( '<error>%s</error>', $message ) );
 			return Command::FAILURE;
 		}
 
-		$command = "cd $extension_slug && composer install && npm install";
+		$output->writeln( '<info>Generating Extension Files...</info>' );
+		$progress_bar = new ProgressBar( $output );
+		$progress_bar->start();
 
-		// Execute the command
-		exec( $command, $response, $code );
+		$commands = [
+			"cd $extension_slug && composer install",
+			"cd $extension_slug && npm install"
+		];
 
-		// Check if the command executed successfully
-		if ( $code === 0 ) {
+		$process_manager = new ProcessManager( $commands );
+		$success         = $process_manager->execute( $output );
+
+		$progress_bar->finish();
+
+		// Check if the commands executed successfully
+		if ( $success ) {
 			$output->writeln( '<info>Dependencies Successfully Installed!.</info>' );
 		} else {
-			$output->writeln( sprintf( '<error>Dependencies Failed to Install. Message: %s</error>', $response ) );
 			return Command::FAILURE;
 		}
 

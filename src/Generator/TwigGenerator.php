@@ -74,7 +74,6 @@ class TwigGenerator {
 					}
 				} else if ( is_file( $template ) ) {
 					$file_name = $this->get_new_file_name( basename( $template ), $this->slug );
-					echo 'Writing to ' . $file_name . "\n";
 					$rel_path = $this->get_path_relative_to_parent( $template, $this->root_directory );
 					$rendered_content = $this->twig->render( $rel_path, $this->data );
 
@@ -82,7 +81,6 @@ class TwigGenerator {
 					file_put_contents( $output_path, $rendered_content );
 				}
 			}
-
 			return 'success';
 		} catch ( \Exception $e ) {
 			// The slug is used to create the root of the extension, so it is important to remove it if the generation fails.
