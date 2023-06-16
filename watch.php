@@ -36,7 +36,7 @@ do {
 		echo 'Re-building... ';
 		$start = microtime( true );
 		shell_exec( 'rm -rf woo-starter.phar' );
-		shell_exec( 'phar-composer build' );
+		shell_exec( 'box build -v' );
 		echo sprintf( "Done. (%ss)\n", number_format( microtime( true ) - $start, 3 ) );
 	}
 

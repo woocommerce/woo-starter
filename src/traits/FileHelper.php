@@ -5,6 +5,8 @@ namespace WooStarter\traits;
 use WooStarter\App;
 
 use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 trait FileHelper {
 	/**
@@ -86,13 +88,34 @@ trait FileHelper {
 		$paths = [];
 		$iterator = new FilesystemIterator(
 			$template_directory,
-			FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::UNIX_PATHS
+			FilesystemIterator::UNIX_PATHS | FilesystemIterator::FOLLOW_SYMLINKS | FilesystemIterator::SKIP_DOTS
 		);
 
-		foreach ($iterator as $path => $file_info) {
+		foreach ( $iterator as $path => $file_info ) {
 			$paths[] = $path;
 		}
 
 		return $paths;
+	}
+
+	function remove_directory( string $directory ) {
+		if ( ! is_dir( $directory ) ) {
+			return;
+		}
+
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $directory, FilesystemIterator::SKIP_DOTS ),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ( $iterator as $path ) {
+			if ( $path->isFile() || $path->isLink() ) {
+				unlink($path->getPathname());
+			} elseif ( $path->isDir())  {
+				rmdir( $path->getPathname() );
+			}
+		}
+
+		rmdir( $directory );
 	}
 }
