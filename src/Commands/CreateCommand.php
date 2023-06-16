@@ -130,7 +130,25 @@ BANNER;
 		}
 
 		$generator = new TwigGenerator( $template_directory, $data );
-		$generator->generate( '', $template_directory, $extension_slug );
+		$message = $generator->generate( '', $template_directory, $extension_slug );
+
+		if ( $message !== 'success'  ) {
+			$output->writeln( sprintf( '<error>%s</error>', $message ) );
+			return Command::FAILURE;
+		}
+
+		$command = "cd $extension_slug && composer install && npm install";
+
+		// Execute the command
+		exec( $command, $response, $code );
+
+		// Check if the command executed successfully
+		if ( $code === 0 ) {
+			$output->writeln( '<info>Dependencies Successfully Installed!.</info>' );
+		} else {
+			$output->writeln( sprintf( '<error>Dependencies Failed to Install. Message: %s</error>', $response ) );
+			return Command::FAILURE;
+		}
 
 		return Command::SUCCESS;
 	}
