@@ -103,22 +103,18 @@ BANNER;
 		$question->setMaxAttempts(2 );
 		$description = $helper->ask( $input, $output, $question );
 
-		$question = new ConfirmationQuestion( '<question>Do you want dependency injection in your project?</question>', false );
-		$wants_di = $helper->ask( $input, $output, $question );
+//		$question = new ConfirmationQuestion( '<question>Do you want dependency injection in your project?</question>', false );
+//		$wants_di = $helper->ask( $input, $output, $question );
 
-		$output->writeln( sprintf( '<info>Extension Name:</info> %s', $extension_name ) );
-		$output->writeln( sprintf( '<info>Extension Name:</info> %s', $extension_slug ) );
-
-		if ( $wants_di ) {
-			$output->writeln( '<info>Dependency Injection:</info> Yes' );
-		}
+//		if ( $wants_di ) {
+//			$output->writeln( '<info>Dependency Injection:</info> Yes' );
+//		}
 
 		$data = [
 			'slug'                  => $extension_slug,
 			'extension_name'        => $extension_name,
 			'author'                => $author,
-			'extension_description' => $description,
-			'wants_di'              => $wants_di,
+			'extension_description' => $description
 		];
 
 		$progress_bar = new ProgressBar( $output );
