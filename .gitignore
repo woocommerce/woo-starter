@@ -11,4 +11,4 @@ node_modules
 
 # Generated Files
 src/plugin-name
-woo-starter.phar
+*.phar
