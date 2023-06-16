@@ -1,0 +1,17 @@
+{
+  "chmod": "0755",
+  "output": "./woo-starter.phar",
+  "files": [
+    "vendor/twig/twig/src/TwigTest.php"
+  ],
+  "files-bin": [
+    "src/templates/default/plugin-name/.gitignore.twig",
+    "src/templates/default/plugin-name/.wp-env.json.twig",
+    "src/templates/default/plugin-name/phpunit.xml.twig",
+    "src/templates/default/plugin-name/phpcs.xml.dist.twig",
+    "src/templates/default/plugin-name/README.txt.twig"
+  ],
+  "directories-bin": [
+    "src/templates/default/plugin-name/tests"
+  ]
+}
